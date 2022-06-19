@@ -75,9 +75,9 @@ const addGallery = async (req, res) => {
         });
     else {
         await con.query("SELECT pet_id FROM tblPets WHERE pet_id=1", (err, results) => {
-            let qry = `INSERT INTO tblGallery (img_link))
+            let qry = `INSERT INTO tblGallery (img_link)
                 VALUES (
-                '${req.body.img_link}'
+                '${req.body.img_link}');
                 `;
 
             con.query(qry, (err, results) => {
