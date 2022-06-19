@@ -11,11 +11,18 @@ const getAllPets = async (req, res) => {
             console.error(err);
         }
         else {
-            res.json({
-                status: "Sucess",
-                message: "Got data sucessfully",
-                result: results
-            });
+            if (results.length == 0)
+                res.json({
+                    status: "Sucess",
+                    message: "Not Available",
+                    result: results
+                });
+            else
+                res.json({
+                    status: "Sucess",
+                    message: "Got data sucessfully",
+                    result: results
+                });
             console.log('served getAllPets');
         }
     });
@@ -216,7 +223,6 @@ const updatePetOnId = async (req, res) => {
 // LINK
 // deletes a pet based on id
 const deletePetOnId = async (req, res) => {
-    console.table(req);
     if (req.params.id === undefined)
         res.json({
             status: "Failed",

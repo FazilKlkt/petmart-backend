@@ -11,11 +11,18 @@ const getAllUsers = async (req, res) => {
             console.error(err);
         }
         else {
-            res.json({
-                status: "Sucess",
-                message: "Got data sucessfully",
-                result: results
-            });
+            if (results.length == 0)
+                res.json({
+                    status: "Sucess",
+                    message: "Not available",
+                    result: results
+                });
+            else
+                res.json({
+                    status: "Sucess",
+                    message: "Got data sucessfully",
+                    result: results
+                });
             console.log('served getAllUsers');
         }
     });
@@ -106,7 +113,14 @@ const addUser = async (req, res) => {
                 `;
 
             con.query(qry, (err, results) => {
-                if (err) throw err;
+                if (err) {
+                    if (err.code == 'ER_DUP_ENTRY')
+                        res.json({
+                            status: "Failed",
+                            message: "User already exists with same mail",
+                            result: []
+                        });
+                }
                 else {
                     res.json({
                         status: "Sucess",
@@ -125,17 +139,14 @@ const addUser = async (req, res) => {
 //  http://localhost:5000/user/update/id/{id_number}
 // updates a user based on id
 const updateUserOnId = async (req, res) => {
-    if (req.params.id === undefined) {
+    if (req.params.id === undefined)
         res.json({
             status: "Failed",
             message: "No id was given",
             result: []
         })
-        console.log('served updateUserOnId');
-    }
     else {
-        await con.query("SELECT pet_id FROM tblUser WHERE user_id=" + req.params.id, (err, results) => {
-            console.log(typeof results);
+        await con.query("SELECT user_id FROM tblUser WHERE user_id=" + req.params.id, (err, results) => {
             if (results.length == 0) {
                 res.json({
                     status: "Sucess",
@@ -145,15 +156,16 @@ const updateUserOnId = async (req, res) => {
                 console.log('served updateUserOnId');
             }
             else {
-                let qry = `UPDATE tblUser SET
-                user_name ='${req.body.name}',
-                user_mail ='${req.body.mail}',
-                user_pass ='${req.body.pass}',
-                user_isAdmin =${req.body.isAdmin};
-                `;
-
+                let qry = `UPDATE tblUser SET user_name ='${req.body.name}',user_mail ='${req.body.mail}',user_pass ='${req.body.pass}',user_isAdmin =${req.body.isAdmin} WHERE user_id = ${req.params.id} ;`;
                 con.query(qry, (err, results) => {
-                    if (err) throw err;
+                    if (err) {
+                        if (err.code == 'ER_DUP_ENTRY')
+                            res.json({
+                                status: "Failed",
+                                message: "Email already exists",
+                                result: []
+                            });
+                    }
                     else {
                         res.json({
                             status: "Sucess",
@@ -169,34 +181,35 @@ const updateUserOnId = async (req, res) => {
 }
 
 
-// LINK
+// http://localhost:5000/user/delete/{id}
 // deletes a user based on id
 const deleteUserOnId = async (req, res) => {
-    console.table(req);
     if (req.params.id === undefined)
         res.json({
             status: "Failed",
             message: "No id was given",
             result: []
         })
-    let id = req.params.id;
-    await con.query("SELECT user_id FROM tblUser WHERE user_id = " + id, (err, results) => {
-        if (results.length == 0)
-            res.json({
-                status: "Sucess",
-                message: "Not available",
-                result: []
-            });
-        else {
-            con.query("DELETE FROM tblUser WHERE user_id = " + id, (err, results) => {
+    else {
+        let id = req.params.id;
+        await con.query("SELECT user_id FROM tblUser WHERE user_id = " + id, (err, results) => {
+            if (results.length == 0)
                 res.json({
                     status: "Sucess",
-                    message: "Deleted user from database",
+                    message: "Not available",
                     result: []
                 });
-            })
-        }
-    })
+            else {
+                con.query("DELETE FROM tblUser WHERE user_id = " + id, (err, results) => {
+                    res.json({
+                        status: "Sucess",
+                        message: "Deleted user from database",
+                        result: []
+                    });
+                })
+            }
+        })
+    }
 }
 
 // exporting user modules
