@@ -24,7 +24,23 @@ const isDataNullUser = (body) => {
         return false;
 }
 
+const isDataNullOrder = (body) => {
+    if (
+        body.pet_id == undefined ||
+        body.quantity == undefined ||
+        body.gender == undefined ||
+        body.contact == undefined ||
+        body.address == undefined ||
+        body.pin == undefined ||
+        body.status == undefined
+    )
+        return true;
+    else
+        return false;
+}
+
 module.exports = {
     isDataNullPet,
-    isDataNullUser
+    isDataNullUser,
+    isDataNullOrder
 }

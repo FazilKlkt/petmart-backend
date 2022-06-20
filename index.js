@@ -4,6 +4,7 @@ const petRouter = require('./routes/petRoute');
 const userRouter = require('./routes/userRoutes');
 const galleryRoute = require('./routes/galleryRoute');
 const logRouter = require('./routes/logRoute');
+const orderRoute = require('./routes/orderRoute');
 const { connectDB } = require('./config/db');
 const express = require('express');
 const cors = require('cors');
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 connectDB();
 app.use('/pet', petRouter);
 app.use('/user', userRouter);
+app.use('/order', orderRoute);
 app.use('/gallery', galleryRoute);
 app.use('/log', logRouter);
 
