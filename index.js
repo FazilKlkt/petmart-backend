@@ -3,6 +3,7 @@ require('dotenv').config();
 const petRouter = require('./routes/petRoute');
 const userRouter = require('./routes/userRoutes');
 const galleryRoute = require('./routes/galleryRoute');
+const logRouter = require('./routes/logRoute');
 const { connectDB } = require('./config/db');
 const express = require('express');
 const cors = require('cors');
@@ -18,6 +19,7 @@ connectDB();
 app.use('/pet', petRouter);
 app.use('/user', userRouter);
 app.use('/gallery', galleryRoute);
+app.use('/log', logRouter);
 
 // listening at port 5000
 app.listen(process.env.HOST, () => console.log("Connected on port:" + process.env.HOST));
