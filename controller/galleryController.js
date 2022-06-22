@@ -1,5 +1,5 @@
 const { con } = require('../config/db');
-
+const { upload } = require('../config/file-handler');
 
 // http://localhost:5000/gallery/
 // returns all gallery items in the database
@@ -67,17 +67,18 @@ const getGalleryById = async (req, res) => {
 //  http://localhost:5000/gallery/add
 // add gallery item to database
 const addGallery = async (req, res) => {
-    if (req.body.img_link == undefined)
+    if (req.file == undefined) {
         res.json({
             status: "Failed",
             message: "Input data missing,check if you have enterd data in body correctly !",
             result: []
         });
+    }
     else {
-        await con.query("SELECT pet_id FROM tblPets WHERE pet_id=1", (err, results) => {
+        await con.query("SELECT 1+1 AS solution", (err, results) => {
             let qry = `INSERT INTO tblGallery (img_link)
                 VALUES (
-                '${req.body.img_link}');
+                '${req.file.path}');
                 `;
 
             con.query(qry, (err, results) => {
@@ -87,7 +88,7 @@ const addGallery = async (req, res) => {
                 else {
                     res.json({
                         status: "Sucess",
-                        message: "Added user into database",
+                        message: "Added image into database",
                         result: []
                     });
                     console.log('served addGallery');

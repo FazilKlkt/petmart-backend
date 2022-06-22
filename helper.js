@@ -1,3 +1,5 @@
+const { con } = require('./config/db');
+
 const isDataNullPet = (body) => {
     if (
         body.name == undefined ||
@@ -39,8 +41,36 @@ const isDataNullOrder = (body) => {
         return false;
 }
 
+const recordLog = async (logEvent) => {
+    const now = new Date().toLocaleString('en-US', {
+        timeZone: 'Asia/Calcutta'
+    });
+    if (logEvent == undefined)
+        throw new Error("Data not given");
+    else {
+        let query = `
+            INSERT INTO tblAdminLogs
+            (
+                log_time,
+                log_message
+            ) VALUES (
+                '${now}',
+                '${logEvent}'
+            )
+        `;
+
+        con.query(query, (err, result) => {
+            if (err) throw err;
+            else {
+                console.log(result);
+            }
+        })
+    }
+}
+
 module.exports = {
     isDataNullPet,
     isDataNullUser,
-    isDataNullOrder
+    isDataNullOrder,
+    recordLog
 }

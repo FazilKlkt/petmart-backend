@@ -1,5 +1,5 @@
 const { con } = require('../config/db');
-const { isDataNullOrder } = require('../helper');
+const { isDataNullOrder, recordLog } = require('../helper');
 
 
 // http://localhost:5000/order/
@@ -66,7 +66,7 @@ const getOrderById = async (req, res) => {
 
 //  http://localhost:5000/order/add
 // add order to database
-const addPet = async (req, res) => {
+const addOrder = async (req, res) => {
     if (isDataNullOrder(req.body))
         res.json({
             status: "Failed",
@@ -95,6 +95,7 @@ const addPet = async (req, res) => {
                         message: "Added order into database",
                         result: []
                     });
+                    recordLog(`ADDED ORDER FOR ${req.body.name},WITH QUANTITY ${req.body.quantity}`);
                     console.log('served addOrder');
                 }
             });
@@ -140,6 +141,7 @@ const updateOrderOnId = async (req, res) => {
                             message: "Updated order in database",
                             result: []
                         });
+                        recordLog(`UPDATED ORDER ID ${req.params.id},status TO ${req.body.status}`);
                         console.log('served updateOrderOnId');
                     }
                 });
@@ -174,6 +176,7 @@ const deleteOrdernId = async (req, res) => {
                     result: []
                 });
             })
+            recordLog(`DELETED ORDER ID ${req.params.id}`);
         }
     })
 }
