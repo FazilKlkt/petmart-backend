@@ -134,7 +134,7 @@ const getPetsOnCategory = async (req, res) => {
 //  http://localhost:5000/pet/add
 // add pet to database
 const addPet = async (req, res) => {
-    if (isDataNullPet(req.body))
+    if (isDataNullPet(req))
         res.json({
             status: "Failed",
             message: "Input data missing,check if you have enterd all data in body correctly !",
@@ -147,7 +147,7 @@ const addPet = async (req, res) => {
                 VALUES (
                 '${req.body.name}',
                 '${req.body.description}',
-                '${req.body.img}',
+                '${req.file.path}',
                 ${req.body.price},
                 '${req.body.category}',
                 ${req.body.isOnOffer},

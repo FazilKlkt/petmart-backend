@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { upload } = require('../config/file-handler');
 const {
     getAllPets,
     getPetById,
@@ -16,7 +17,7 @@ router.get('/', getAllPets);
 router.get('/id/:id?', getPetById);
 router.get('/active', getActivePets);
 router.get('/category/:category?', getPetsOnCategory);
-router.post('/add', addPet);
+router.post('/add', upload, addPet);
 router.put('/update/:id?', updatePetOnId);
 router.delete('/delete/:id?', deletePetOnId);
 

@@ -1,13 +1,13 @@
 const { con } = require('./config/db');
 
-const isDataNullPet = (body) => {
+const isDataNullPet = (req) => {
     if (
-        body.name == undefined ||
-        body.img == undefined ||
-        body.description == undefined ||
-        body.price == undefined ||
-        body.category == undefined ||
-        body.status == undefined
+        req.body.name == undefined ||
+        req.file == undefined ||
+        req.body.description == undefined ||
+        req.body.price == undefined ||
+        req.body.category == undefined ||
+        req.body.status == undefined
     )
         return true;
     else
