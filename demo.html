@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetMart</title>
+</head>
+
+<body>
+    <form action="javascript:doSomething()" enctype="multipart/form-data">
+
+        <!-- accepts images only -->
+        <input type="file" id="imageId" accept="image/gif, image/jpeg, image/png, image/jpg">
+        <button type="submit">Submit</button>
+    </form>
+
+    <input type="button" value="Get pet data" id="getPetBtn">
+
+    <img style="width: 10rem;" id="petImage" />
+
+
+
+    <script>
+
+        document.getElementById('getPetBtn').addEventListener('click', function () {
+            getAllPets();
+        })
+
+        const doSomething = () => {
+            console.log("hi");
+            let headersList = {
+                "Accept": "*/*",
+                "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+            }
+
+            let inp = document.getElementById('imageId').files[0];
+            console.table(inp);
+            let bodyContent = new FormData();
+            bodyContent.append("img", inp);
+
+            fetch("http://localhost:5000/gallery/add", {
+                method: "POST",
+                body: bodyContent,
+                headers: headersList
+            }).then(function (response) {
+                return response.text();
+            }).then(function (data) {
+                console.log(data);
+            }).catch(function (err) {
+                console.log(err);
+            })
+
+            // to reset files field
+            document.getElementById("imageId").files = new DataTransfer().files;
+        }
+
+        const getAllPets = () => {
+
+            let headersList = {
+                "Accept": "*/*",
+                "User-Agent": "Thunder Client (https://www.thunderclient.com)"
+            }
+
+            fetch("http://localhost:5000/pet/", {
+                method: "GET",
+                headers: headersList
+            }).then(function (response) {
+                console.log(response.json().then((data) => {
+                    document.getElementById('petImage').src = data.result[0].pet_img;
+                }
+                ));
+            }).catch(function (err) {
+                console.log(err);
+            })
+        }
+
+    </script>
+</body>
+
+</html>
