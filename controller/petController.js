@@ -151,7 +151,7 @@ const addPet = async (req, res) => {
                 ${req.body.price},
                 '${req.body.category}',
                 ${req.body.isOnOffer},
-                '${req.body.status}');
+                ${req.body.status});
                 `;
 
             con.query(qry, (err, results) => {
@@ -195,11 +195,11 @@ const updatePetOnId = async (req, res) => {
             }
             else {
                 let qry = `UPDATE tblPets SET pet_name ='${req.body.name}',pet_description ='${req.body.description}',
-                pet_img ='${req.body.img}',
+                pet_img ='${req.file.path}',
                 pet_price =${req.body.price},
                 pet_category ='${req.body.category}',
                 pet_isOnOffer =${req.body.isOnOffer},
-                pet_status ='${req.body.status}'
+                pet_status =${req.body.status}
                 WHERE pet_id =${req.params.id};
                 `;
 

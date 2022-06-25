@@ -78,7 +78,7 @@ const addOrder = async (req, res) => {
             // INSERT INTO `tblPets` (`p_id`, `p_name`, `p_img`, `p_description`, `p_price`, `p_isOnOffer`, `p_category`, `p_gender`, `status`) VALUES ('5', 'manju', 'hai', 'bye', '222', '0', 'cat', 'male', 'uff');
             let qry = `INSERT INTO tblOrder (pet_id, quantity, gender, contact_number, address,pin, status)
                 VALUES (
-                ${req.body.name},
+                ${req.body.pet_id},
                 ${req.body.quantity},
                 '${req.body.gender}',
                 ${req.body.contact},

@@ -18,7 +18,7 @@ router.get('/id/:id?', getPetById);
 router.get('/active', getActivePets);
 router.get('/category/:category?', getPetsOnCategory);
 router.post('/add', upload, addPet);
-router.put('/update/:id?', updatePetOnId);
+router.put('/update/:id?', upload, updatePetOnId);
 router.delete('/delete/:id?', deletePetOnId);
 
 module.exports = router;

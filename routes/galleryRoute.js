@@ -13,7 +13,7 @@ const { upload } = require('../config/file-handler');
 router.get('/', getAllGallery);
 router.get('/id/:id?', getGalleryById);
 router.post('/add', upload, addGallery);
-router.put('/update/:id?', updateGalleryOnId);
+router.put('/update/:id?', upload, updateGalleryOnId);
 router.delete('/delete/:id?', deleteGalleryrOnId);
 
 module.exports = router;

@@ -121,7 +121,7 @@ const updateGalleryOnId = async (req, res) => {
                 console.log('served updateGalleryOnId');
             }
             else {
-                let qry = `UPDATE tblGallery SET img_link ='${req.body.img_link}' WHERE img_id = ${req.params.id} ;`;
+                let qry = `UPDATE tblGallery SET img_link ='${req.file.path}' WHERE img_id = ${req.params.id} ;`;
                 con.query(qry, (err, results) => {
                     if (err)
                         console.error(err);
